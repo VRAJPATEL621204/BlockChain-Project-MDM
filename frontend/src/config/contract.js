@@ -1,5 +1,5 @@
 export const CONTRACT_ADDRESS =
-  "0x8C0e57aF04413bf536dFFeDF90DA399d96087c0d";
+  "0x6f9cb9B2bc11E94970853A0a68c3B540ad3B6F6B";
 
 export const ABI = 
 [
@@ -313,6 +313,25 @@ export const ABI =
 	{
 		"inputs": [
 			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "rollRegistered",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
@@ -377,8 +396,7 @@ export const ABI =
 		"stateMutability": "view",
 		"type": "function"
 	}
-
-
-];
+]
+;
 
 

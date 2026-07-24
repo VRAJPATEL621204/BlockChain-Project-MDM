@@ -40,6 +40,8 @@ contract WorkshopRegistration {
 
     mapping(address => bool) public hasRegistered;
 
+    mapping(string => bool) public rollRegistered;
+
     mapping(address => Student) public studentDetails;
 
     // =====================================================
@@ -121,6 +123,11 @@ contract WorkshopRegistration {
         );
 
         require(
+            !rollRegistered[_rollNo],
+            "Roll Number Already Registered"
+        );
+
+        require(
             workshop.remainingSeats > 0,
             "No Seats Available"
         );
@@ -139,6 +146,8 @@ contract WorkshopRegistration {
         studentDetails[msg.sender] = student;
 
         hasRegistered[msg.sender] = true;
+
+        rollRegistered[_rollNo] = true;
 
         workshop.remainingSeats--;
 
@@ -213,6 +222,10 @@ function resetWorkshop()
     ) {
 
         address wallet = participantAddresses[i];
+
+        rollRegistered[
+            studentDetails[wallet].rollNo
+        ] = false;
 
         hasRegistered[wallet] = false;
 
