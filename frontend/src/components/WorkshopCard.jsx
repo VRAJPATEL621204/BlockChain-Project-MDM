@@ -1,113 +1,97 @@
-import { Calendar, Users, Armchair } from "lucide-react";
+import { motion } from "framer-motion";
+import { Armchair, CalendarDays, Sparkles, Users } from "lucide-react";
 
 export default function WorkshopCard({ workshop }) {
-  const percentage =
-    ((workshop.totalSeats - workshop.remainingSeats) /
-      workshop.totalSeats) *
-    100;
+  const occupiedSeats = workshop.totalSeats - workshop.remainingSeats;
+  const totalSeats = Math.max(workshop.totalSeats, 1);
+  const percentage = Math.min(
+    100,
+    (occupiedSeats / totalSeats) * 100
+  );
 
   return (
-    <div className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl shadow-2xl p-8 mt-8">
-
-      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-
-        <div>
-          <h2 className="text-3xl font-bold text-white">
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="overflow-hidden rounded-2xl border border-white/10 bg-[#111827] p-6 shadow-lg backdrop-blur-xl"
+    >
+      <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+        <div className="max-w-2xl">
+          <div className="inline-flex h-8 items-center gap-2 rounded-full border border-violet-400/20 bg-violet-500/10 px-3 text-sm font-semibold text-violet-200">
+            <Sparkles className="h-4 w-4" />
+            Workshop overview
+          </div>
+          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white">
             {workshop.title}
           </h2>
-
-          <p className="text-gray-300 mt-2">
+          <p className="mt-2 max-w-2xl text-sm text-[#94A3B8]">
             {workshop.description}
           </p>
         </div>
 
         <div
-          className={`px-5 py-2 rounded-full font-semibold ${
+          className={`inline-flex h-12 items-center gap-2 rounded-xl border px-4 text-sm font-semibold shadow-sm ${
             workshop.remainingSeats > 0
-              ? "bg-green-500/20 text-green-400"
-              : "bg-red-500/20 text-red-400"
+              ? "border-green-500/20 bg-green-500/10 text-green-300"
+              : "border-red-500/20 bg-red-500/10 text-red-300"
           }`}
         >
-          {workshop.remainingSeats > 0
-            ? "🟢 Registration Open"
-            : "🔴 Workshop Full"}
+          <span
+            className={`h-2.5 w-2.5 rounded-full ${
+              workshop.remainingSeats > 0 ? "bg-green-400" : "bg-red-400"
+            }`}
+          />
+          {workshop.remainingSeats > 0 ? "Registration open" : "Workshop full"}
         </div>
-
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 mt-8">
-
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-
-          <Calendar className="text-purple-400 mb-3" size={28} />
-
-          <p className="text-gray-400">
-            Workshop Date
+      <div className="mt-8 grid gap-6 sm:grid-cols-3">
+        <div className="flex h-full min-h-28 flex-col justify-between rounded-2xl border border-white/10 bg-[#1F2937] p-6">
+          <CalendarDays className="h-5 w-5 text-blue-300" />
+          <p className="mt-4 text-sm font-medium uppercase tracking-[0.16em] text-[#94A3B8]">
+            Workshop date
           </p>
-
-          <p className="font-semibold text-lg mt-1">
+          <p className="mt-2 text-lg font-semibold text-white">
             {workshop.date}
           </p>
-
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-
-          <Armchair className="text-purple-400 mb-3" size={28} />
-
-          <p className="text-gray-400">
-            Seats Remaining
+        <div className="flex h-full min-h-28 flex-col justify-between rounded-2xl border border-white/10 bg-[#1F2937] p-6">
+          <Armchair className="h-5 w-5 text-blue-300" />
+          <p className="mt-4 text-sm font-medium uppercase tracking-[0.16em] text-[#94A3B8]">
+            Seats remaining
           </p>
-
-          <p className="font-semibold text-lg mt-1">
+          <p className="mt-2 text-lg font-semibold text-white">
             {workshop.remainingSeats} / {workshop.totalSeats}
           </p>
-
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-
-          <Users className="text-purple-400 mb-3" size={28} />
-
-          <p className="text-gray-400">
+        <div className="flex h-full min-h-28 flex-col justify-between rounded-2xl border border-white/10 bg-[#1F2937] p-6">
+          <Users className="h-5 w-5 text-blue-300" />
+          <p className="mt-4 text-sm font-medium uppercase tracking-[0.16em] text-[#94A3B8]">
             Participants
           </p>
-
-          <p className="font-semibold text-lg mt-1">
+          <p className="mt-2 text-lg font-semibold text-white">
             {workshop.participants}
           </p>
-
         </div>
-
       </div>
 
-      <div className="mt-10">
-
-        <div className="flex justify-between mb-2">
-
-          <span className="text-gray-400">
-            Workshop Capacity
-          </span>
-
-          <span className="font-bold">
-            {Math.round(percentage)}%
-          </span>
-
+      <div className="mt-8 rounded-2xl border border-white/10 bg-[#1F2937] p-6">
+        <div className="mb-3 flex items-center justify-between text-sm text-[#94A3B8]">
+          <span>Capacity utilization</span>
+          <span className="font-semibold text-white">{Math.round(percentage)}%</span>
         </div>
-
-        <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden">
-
-          <div
-            className="h-full bg-gradient-to-r from-green-400 via-purple-500 to-pink-500 rounded-full transition-all duration-700"
-            style={{
-              width: `${percentage}%`,
-            }}
+        <div className="h-2 overflow-hidden rounded-full bg-[#030712]/70 ring-1 ring-white/5">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="h-full rounded-full bg-gradient-to-r from-violet-600 to-blue-500"
           />
-
         </div>
-
       </div>
-
-    </div>
+    </motion.section>
   );
 }
